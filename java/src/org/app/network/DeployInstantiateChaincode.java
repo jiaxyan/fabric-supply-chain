@@ -39,12 +39,12 @@ import org.hyperledger.fabric.sdk.security.CryptoSuite;
  */
 
 public class DeployInstantiateChaincode {
-
+	
 	public static void main(String[] args) {
+
 		try {
 			CryptoSuite cryptoSuite = CryptoSuite.Factory.getCryptoSuite();
 			
-			System.out.println("生成User1");
 			UserContext org1Admin = new UserContext();
 			File pkFolder1 = new File(Config.ORG1_USR_ADMIN_PK);
 			File[] pkFiles1 = pkFolder1.listFiles();
@@ -67,7 +67,7 @@ public class DeployInstantiateChaincode {
 			org2Admin.setEnrollment(enrollOrg2Admin);
 			org2Admin.setMspId(Config.ORG2_MSP);
 			org2Admin.setName(Config.ADMIN);
-System.out.println("生成FabricClient组织管理者1 (using org1Admin) 并在其上部署chaincode");
+
 			FabricClient fabClient = new FabricClient(org1Admin);
 
 			Channel mychannel = fabClient.getInstance().newChannel(Config.CHANNEL_NAME);
@@ -102,10 +102,6 @@ System.out.println("生成FabricClient组织管理者1 (using org1Admin) 并在�
 			
 			
 			
-			
-			
-System.out.println("设置fabClient 为组织管理者2 (using org2Admin) 并在其上部署chaincode");
-			
 			fabClient.getInstance().setUserContext(org2Admin);
 			
 			response = fabClient.deployChainCode(Config.CHAINCODE_1_NAME,
@@ -130,9 +126,12 @@ System.out.println("设置fabClient 为组织管理者2 (using org2Admin) 并在
 			}
 
 		} catch (Exception e) {
-			System.out.println("excetpion");
+			System.out.println("[ERROR] DeployInstantiateChaincode->deploy");
 			e.printStackTrace();
 		}
+	
 	}
+	
+	public static void deploy() {}
 
 }

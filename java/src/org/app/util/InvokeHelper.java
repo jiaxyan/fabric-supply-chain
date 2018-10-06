@@ -47,7 +47,6 @@ public class InvokeHelper {
 	private static EventHub eventHub;
 	private static Orderer orderer;
 	private static String testString = null;
-	private static int chainSize = 200;
 	
 
 	private Logger log = Logger.getLogger(InvokeHelper.class.getClass());
@@ -92,8 +91,8 @@ public class InvokeHelper {
 	
 	
 	
-	public static Collection<ProposalResponse> putToLedger(String key, byte[] value, 
-			ChannelClient channelClient) throws ProposalException, InvalidArgumentException {
+	public static Collection<ProposalResponse> putToLedger(String key, byte[] value
+			/*ChannelClient channelClient*/) throws ProposalException, InvalidArgumentException {
 		TransactionProposalRequest request = fabClient.getInstance().newTransactionProposalRequest();
 		ChaincodeID ccid = ChaincodeID.newBuilder().setName(Config.CHAINCODE_1_NAME).build();
 		request.setChaincodeID(ccid);
@@ -125,6 +124,7 @@ public class InvokeHelper {
 		Iterator<ProposalResponse> it = responsesQuery.iterator();
 		return it.next().getChaincodeActionResponsePayload();
 	}
+	
 	/*public byte[] getFixedAmountRandomData(int amount) {
 		File tempFile = new File(Config.TEMP_FILE_PATH);
 		RandomAccessFile r = null;

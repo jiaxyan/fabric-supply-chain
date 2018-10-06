@@ -37,6 +37,7 @@ import org.hyperledger.fabric.sdk.security.CryptoSuite;
 public class CreateChannel {
 
 	public static void main(String[] args) {
+
 		try {
 			CryptoSuite.Factory.getCryptoSuite();
 			Util.cleanUp();
@@ -106,6 +107,10 @@ public class CreateChannel {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	
+	
 	}
 
+	public static void initialChannel() {}
+	
 }

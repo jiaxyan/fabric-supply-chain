@@ -2,6 +2,7 @@ package org.app.util;
 
 import java.util.concurrent.TimeUnit;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
@@ -11,9 +12,12 @@ public class Timer {
 	private Stopwatch time = null;
 	private JSONObject timeRecoder = null;
 	private Logger log = Logger.getLogger(Timer.class.getClass());
+	private String filePath = null;
 	
-	public Timer() {
-		timeRecoder = new JSONObject();
+	public Timer(String filePath) {
+		log.setLevel(Level.INFO);
+		this.timeRecoder = new JSONObject();
+		this.filePath = filePath;
 	}
 	
 	public void startTiming() {
@@ -31,5 +35,10 @@ public class Timer {
 	public void recordToJsonFile(String jsonKeyString) {
 		timeRecoder.put(jsonKeyString, getElapsedMicroSeconds());
 		log.info("JosnFile has recorded one record.");
+	}
+	
+	public void saveToFile() {
+		
+		log.info("JsonFile has been saved to file:" + filePath);
 	}
 }

@@ -16,8 +16,9 @@ public class Config {
 	public static final String ADMIN = "admin";
 
 	public static final String ADMIN_PASSWORD = "adminpw";
-	
+
 	public static final String CHANNEL_CONFIG_PATH = "config/channel.tx";
+	public static final String CHANNEL1_CONFIG_PATH = "../network_resources/config/channel1.tx";
 	
 	//组织1的基目录 crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
 	public static final String ORG1_USR_BASE_PATH = "crypto-config" + File.separator + "peerOrganizations" + File.separator
@@ -44,6 +45,7 @@ public class Config {
 	public static final String ORDERER_NAME = "orderer.example.com";
 
 	public static final String CHANNEL_NAME = "mychannel";
+	public static final String CHANNEL1_NAME = "mychannel1";
 	
 	public static final String[] CHANNELS_NAME = {"mychannel1", "mychannel2", "mychannel3", "mychannel4", "mychannel5"};
 
