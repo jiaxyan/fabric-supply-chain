@@ -1,0 +1,14 @@
+CreateMutiChannels 创建多通道
+error信息
+ERROR - Channel mychannel1 error: New channel mychannel1 error. StatusValue 400. Status BAD_REQUEST
+org.hyperledger.fabric.sdk.exception.TransactionException: New channel mychannel1 error. StatusValue 400. Status BAD_REQUEST
+	at org.hyperledger.fabric.sdk.Channel.<init>(Channel.java:224)
+	at org.hyperledger.fabric.sdk.Channel.createNewInstance(Channel.java:1121)
+	at org.hyperledger.fabric.sdk.HFClient.newChannel(HFClient.java:135)
+	at org.app.network.CreateMutiChannel.main(CreateMutiChannel.java:82)
+
+定位代码 Channel.class  223行
+			if (200 != trxResult.getStatusValue()) {
+                throw new TransactionException(format("New channel %s error. StatusValue %d. Status %s", name,
+                        trxResult.getStatusValue(), "" + trxResult.getStatus()));
+            }

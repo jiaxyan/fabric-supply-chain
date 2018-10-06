@@ -3,6 +3,7 @@ package org.app.config;
 import java.io.File;
 
 public class Config {
+	public static final String TEMP_FILE_PATH = "../results/temp.txt";
 	
 	public static final String ORG1_MSP = "Org1MSP";
 
@@ -41,8 +42,12 @@ public class Config {
 	public static final String ORDERER_URL = "grpc://localhost:7050";
 	
 	public static final String ORDERER_NAME = "orderer.example.com";
-	
+
 	public static final String CHANNEL_NAME = "mychannel";
+	
+	public static final String[] CHANNELS_NAME = {"mychannel1", "mychannel2", "mychannel3", "mychannel4", "mychannel5"};
+
+	public static final String[] CHANNELS_CONFIG_PATH = {"/Users/jiaxyan/workspace/blockchain-application-using-fabric-java-sdk-master/network_resources/config/channel1.tx", "../config/channel2.tx", "../config/channel3.tx", "config/channel4.tx", "config/channel5.tx"};
 	
 	public static final String ORG1_PEER_0 = "peer0.org1.example.com";
 	
