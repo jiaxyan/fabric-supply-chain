@@ -116,11 +116,11 @@ public class InvokeHelper {
 	
 	
 	public static byte[] getFromLedger(String key 
-			/*ChannelClient channelClient*/) throws InvalidArgumentException, ProposalException {
+			/*ChannelClient channelClient*/) throws InvalidArgumentException, ProposalException, SupplyChainException {
 		byte[][] args = {key.getBytes()};
 		Collection<ProposalResponse>  responsesQuery = channelClient.queryByChainCode(Config.CHAINCODE_1_NAME, "querySig", args);
 		if(responsesQuery.size()!=1)
-			{System.out.println("====[ERROR] 返回的结果长度不为1====");return null;}
+			throw new SupplyChainException("返回的结果长度不为1");
 		Iterator<ProposalResponse> it = responsesQuery.iterator();
 		return it.next().getChaincodeActionResponsePayload();
 	}

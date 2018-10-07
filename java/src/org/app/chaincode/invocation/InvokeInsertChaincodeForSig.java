@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.app.network.CreateChannel;
 import org.app.network.DeployInstantiateChaincode;
 import org.app.util.InvokeHelper;
+import org.app.util.SupplyChainException;
 import org.app.util.Timer;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
 import org.hyperledger.fabric.sdk.exception.ProposalException;
@@ -47,19 +48,20 @@ public class InvokeInsertChaincodeForSig {
 //		DeployInstantiateChaincode.deploy();
 //		Thread.sleep(1000);
 		
-		//init 200 blocks(including data) in the channel
+		/*
+		 * init 200 blocks(including data) in the channel
+		 * 生成固定长度的一个通道（对于不同数据大小需要重复生成）
+		 */
 		for(int count=0; count<chainLength; count++) {
 			try {
 				if(blockPositionBooleanArray[count] == 1) {
 					//generate fixed amount of data
 					byte[] fixedAmountData = InvokeHelper.getFixedAmountRandomBytes(txAmount);
-					
 					InvokeHelper.putToLedger("txkey_"+count, fixedAmountData);
 					
 				}else {
 					//generate random data
 					byte[] fixedAmountData = InvokeHelper.getFixedAmountRandomBytes(txAmount);
-					
 					InvokeHelper.putToLedger("txkey_"+count, fixedAmountData);
 				}
 			} catch (ProposalException | InvalidArgumentException e) {
@@ -69,6 +71,26 @@ public class InvokeInsertChaincodeForSig {
 			Thread.sleep(2000);
 System.out.print("-");
 		}
+		
+		
+		/*
+		 * read txAmount data from ledger and get Elapsed time. 
+		 * 读取数据并计时
+		 */
+		insertTimer.startTiming();
+		for(int i=0; i<40; i++) {
+			try {
+				InvokeHelper.getFromLedger("txkey_"+txPositionMarkArray[i]);
+				
+			} catch (InvalidArgumentException | ProposalException | SupplyChainException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		insertTimer.stopTiming();
+		insertTimer.recordElapsedTimeToJsonFile("1K");
+		insertTimer.saveToFile();
+		
 	
 	}
 	
