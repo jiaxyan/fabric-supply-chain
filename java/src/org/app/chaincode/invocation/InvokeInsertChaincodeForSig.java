@@ -17,11 +17,17 @@ public class InvokeInsertChaincodeForSig {
 	private static Logger log = Logger.getLogger(InvokeInsertChaincodeForSig.class.getClass());
 	private static Timer insertTimer = null;
 //	private InvokeHelper invokeHelper = new InvokeHelper();
+	
 	private final static int txAmount = 40;//number of blocks(Txs) to be generated
+	public static int dataSize = 100*1024;// 1KB, 10KB, 100KB, 1MB, 10MB
+	public static String jsonKey = "100K";
+	public static String fileName = "TimeOf40In200blocks.json";//"TimeOf10KIn200blocks.json"
+	
+	
 	private final static int chainLength = 200;
 	public static int[] txPositionMarkArray = new int[txAmount];
 	public static int[] blockPositionBooleanArray = new int[chainLength];
-	public static int dataSize = 1*1024;// 1KB, 10KB, 100KB, 1MB, 10MB
+	
 	
 	public static void main(String[] args) throws InterruptedException {
 		
@@ -30,7 +36,13 @@ public class InvokeInsertChaincodeForSig {
 		 */
 		log.setLevel(Level.INFO);
 		//Need to be modified on linux
-		String jsonFilePath = "/Users/jiaxyan/workspace/blockchain-application-using-fabric-java-sdk-master/results/TimeOf40In200blocks.json";
+		String jsonFilePath = null;
+		String os = System.getProperty("os.name"); 
+		if(os.toLowerCase().startsWith("mac")){
+			jsonFilePath = "/Users/jiaxyan/workspace/blockchain-application-using-fabric-java-sdk-master/results/"+fileName;
+		}else {
+			jsonFilePath = "/home/csuser/fabric-supply-chain/results/"+fileName;
+		}
 		insertTimer = new Timer(jsonFilePath);
 		InvokeHelper.init();
 		generateRandomPosition();
@@ -88,7 +100,7 @@ System.out.print("-");
 			}
 		}
 		insertTimer.stopTiming();
-		insertTimer.recordElapsedTimeToJsonFile("1K");
+		insertTimer.recordElapsedTimeToJsonFile(jsonKey);
 		insertTimer.saveToFile();
 		
 	
