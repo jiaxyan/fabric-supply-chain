@@ -1,8 +1,8 @@
 git add -A
 git commit -m "message mark this commit"
 git push origin master
+kkk
 
 
-
-git status // 查看状态 commit完成 全部为；绿色 green 代表可以push 
+git status // 查看状态 commit完成 全部为；绿色 green 代表add完了全部修改内容  可以commit: 
 git pull //获取远程仓库的内容 对方修改了之后，我想再次提交我的修改内荣就需要先pull（同步一下远程内容）
