@@ -19,8 +19,8 @@ public class InvokeInsertChaincodeForSig {
 //	private InvokeHelper invokeHelper = new InvokeHelper();
 	
 	private final static int txAmount = 40;//number of blocks(Txs) to be generated
-	public static int dataSize = 100*1024;// 1KB, 10KB, 100KB, 1MB, 10MB
-	public static String jsonKey = "100K";
+	public static int dataSize = 10000*1024;// 1KB, 10KB, 100KB, 1MB, 10MB
+	public static String jsonKey = "10MB";
 	public static String fileName = "TimeOf40In200blocks.json";//"TimeOf10KIn200blocks.json"
 	
 	

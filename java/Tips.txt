@@ -12,3 +12,9 @@ org.hyperledger.fabric.sdk.exception.TransactionException: New channel mychannel
                 throw new TransactionException(format("New channel %s error. StatusValue %d. Status %s", name,
                         trxResult.getStatusValue(), "" + trxResult.getStatus()));
             }
+            
+            
+
+getFromLedger sendProposal HE sendTransaction TIME Interval
+
+light & heavy
