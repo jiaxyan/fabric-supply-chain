@@ -1,7 +1,13 @@
 git add -A
 git commit -m "message mark this commit"
 git push origin master
-kkk
+
+docker ps
+进入到容器
+docker exec -it containerID(8e90f67c6bab) /bin/bash   //enter one container
+在容器内部执行 exit
+peer查询chennel状态
+peer channel -c "mychannel" getinfo
 
 
 git status // 查看状态 commit完成 全部为；绿色 green 代表add完了全部修改内容  可以commit: 
