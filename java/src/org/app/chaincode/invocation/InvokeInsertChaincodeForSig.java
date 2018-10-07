@@ -37,7 +37,7 @@ public class InvokeInsertChaincodeForSig {
 		log.setLevel(Level.INFO);
 		//Need to be modified on linux
 		String jsonFilePath = null;
-		String os = System.getProperty("os.name"); 
+		String os = System.getProperty("os.name");
 		if(os.toLowerCase().startsWith("mac")){
 			jsonFilePath = "/Users/jiaxyan/workspace/blockchain-application-using-fabric-java-sdk-master/results/"+fileName;
 		}else {
@@ -84,13 +84,17 @@ public class InvokeInsertChaincodeForSig {
 System.out.print("-");
 		}
 		
+		/**
+		 * setup server
+		 */
+		
 		
 		/*
 		 * read txAmount data from ledger and get Elapsed time. 
 		 * 读取数据并计时
 		 */
 		insertTimer.startTiming();
-		for(int i=0; i<40; i++) {
+		for(int i=0; i<txAmount; i++) {
 			try {
 				InvokeHelper.getFromLedger("txkey_"+txPositionMarkArray[i]);
 				
