@@ -1,11 +1,13 @@
 package org.app.chaincode.invocation;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Random;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.app.network.CreateChannel;
-import org.app.network.DeployInstantiateChaincode;
 import org.app.util.InvokeHelper;
 import org.app.util.SupplyChainException;
 import org.app.util.Timer;
@@ -16,13 +18,15 @@ public class InvokeInsertChaincodeForSig {
 
 	private static Logger log = Logger.getLogger(InvokeInsertChaincodeForSig.class.getClass());
 	private static Timer insertTimer = null;
-//	private InvokeHelper invokeHelper = new InvokeHelper();
 	
 	private final static int txAmount = 40;//number of blocks(Txs) to be generated
-	public static int dataSize = 100*1024;// 1KB, 10KB, 100KB, 1MB, 10MB
-	public static String jsonKey = "100KB";
-	public static String fileName = "TimeOf40In200blocks3.json";//"TimeOf10KIn200blocks.json" TimeOf40In200blocks.json
-	
+<<<<<<< HEAD
+=======
+	public static int dataSize = 1*1024;// 1KB, 10KB, 100KB, 1MB, 10MB
+	public static String jsonKey = "1K";
+	public static String fileName = "TimeOf40In200blocks.json";//"TimeOf10KIn200blocks.json"
+	public static AccessType accessType = AccessType.LOCAL; //AccessType.LOCAL Or AccessType.REMOTE 模拟轻节点/非轻节点
+>>>>>>> 4bf7cbf693679b73d060b39310575d8cb9d6d413
 	
 	private final static int chainLength = 200;
 	public static int[] txPositionMarkArray = new int[txAmount];
@@ -37,7 +41,7 @@ public class InvokeInsertChaincodeForSig {
 		log.setLevel(Level.INFO);
 		//Need to be modified on linux
 		String jsonFilePath = null;
-		String os = System.getProperty("os.name"); 
+		String os = System.getProperty("os.name");
 		if(os.toLowerCase().startsWith("mac")){
 			jsonFilePath = "/Users/jiaxyan/workspace/blockchain-application-using-fabric-java-sdk-master/results/"+fileName;
 		}else {
@@ -85,41 +89,118 @@ public class InvokeInsertChaincodeForSig {
 		}
 		
 		
+<<<<<<< HEAD
 		/*
 		 * read txAmount data from ledger and get Elapsed time. 
 		 * 读取数据并计时
 		 */
-		insertTimer.startTiming();
-		for(int i=0; i< txAmount; i++) {
+=======
+		switch(accessType) {
+			case LOCAL:
+				readFromLedgerAndTime();
+				break;
+			case REMOTE:
+				readFromLedgerAndSendDataTime();
+				break;
+		}
+		
+	
+	}
+	
+	
+	
+	
+	
+	
+	
+	public static void readFromLedgerAndSendDataTime() {
+		ServerSocket serversocket = null;
+		Socket client = null;
+		DataOutputStream dataOutputStream = null;
+		try {
+			serversocket = new ServerSocket(9999);
+			log.info("Server has been setup(Listening). Please run client side to read from this server...");
+            client = serversocket.accept();
+            log.info("A client has been accepted.");
+            dataOutputStream = new DataOutputStream(client.getOutputStream());
+            byte[] tempByteArray = null;
+			/*
+			 * read txAmount data from ledger and get Elapsed time. 
+			 * 读取数据并计时
+			 */
+			insertTimer.startTiming();
+			for(int i=0; i<txAmount; i++) {
+				tempByteArray = InvokeHelper.getFromLedger("txkey_"+txPositionMarkArray[i]);
+				System.out.println("tempByteArray length (And send):" + tempByteArray.length);
+				dataOutputStream.write(tempByteArray);
+				dataOutputStream.flush();
+			}
+			insertTimer.stopTiming();
+			insertTimer.recordElapsedTimeToJsonFile(jsonKey);
+			insertTimer.saveToFile();
+			
+		} catch (InvalidArgumentException | ProposalException | IOException | SupplyChainException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+>>>>>>> 4bf7cbf693679b73d060b39310575d8cb9d6d413
 			try {
-				InvokeHelper.getFromLedger("txkey_"+txPositionMarkArray[i]);
-				
-			} catch (InvalidArgumentException | ProposalException | SupplyChainException e) {
+				client.close();
+				serversocket.close();
+				dataOutputStream.close();
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
 		}
-		insertTimer.stopTiming();
-		insertTimer.recordElapsedTimeToJsonFile(jsonKey);
-		insertTimer.saveToFile();
-		
-	
 	}
+	
+	
+	public static void readFromLedgerAndTime() {
+		try {
+            byte[] tempByteArray = null;
+			/*
+			 * read txAmount data from ledger and get Elapsed time. 
+			 * 读取数据并计时
+			 */
+			insertTimer.startTiming();
+			for(int i=0; i<txAmount; i++) {
+				tempByteArray = InvokeHelper.getFromLedger("txkey_"+txPositionMarkArray[i]);
+				System.out.println("tempByteArray length:" + tempByteArray.length);
+			}
+			insertTimer.stopTiming();
+			insertTimer.recordElapsedTimeToJsonFile(jsonKey);
+			insertTimer.saveToFile();
+			
+		} catch (InvalidArgumentException | ProposalException | SupplyChainException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			
+		}
+	}
+	
+	
 	
 	public static void generateRandomPosition() {
-		Random random = new Random();
-		int count = 0;
-		for(int i=0; i<txAmount; i++) {
-			while(true) {
-				int randPos = random.nextInt(200);
-				if(randPos<=200 && randPos>=0 && blockPositionBooleanArray[randPos]!=1) {
-					txPositionMarkArray[count++] = randPos;
-					blockPositionBooleanArray[randPos] = 1;
-					break;
+			Random random = new Random();
+			int count = 0;
+			for(int i=0; i<txAmount; i++) {
+				while(true) {
+					int randPos = random.nextInt(200);
+					if(randPos<=200 && randPos>=0 && blockPositionBooleanArray[randPos]!=1) {
+						txPositionMarkArray[count++] = randPos;
+						blockPositionBooleanArray[randPos] = 1;
+						break;
+					}
 				}
-			}
-		}//for
-		
+			}//for
 	}
 
+}
+
+enum AccessType{
+	LOCAL,
+	REMOTE
 }

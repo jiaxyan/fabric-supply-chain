@@ -2,4 +2,15 @@ CONTRIBUTING.md
 DEBUGGING.md
 LICENSE
 MAINTAINERS.md
-
+.DS_Store
+java/.DS_Store
+java/chaincode/.DS_Store
+java/chaincode/src/.DS_Store
+java/chaincode/src/github.com/.DS_Store
+java/target/classes/.DS_Store
+java/target/classes/org/.DS_Store
+java/target/classes/org/app/.DS_Store
+java/target/classes/org/app/chaincode/.DS_Store
+network_resources/crypto-config/peerOrganizations/org1.example.com/ca/fabric-ca-server.db
+network_resources/crypto-config/peerOrganizations/org2.example.com/ca/fabric-ca-server.db
+results/*
