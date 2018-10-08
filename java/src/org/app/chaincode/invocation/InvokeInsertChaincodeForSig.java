@@ -19,9 +19,9 @@ public class InvokeInsertChaincodeForSig {
 //	private InvokeHelper invokeHelper = new InvokeHelper();
 	
 	private final static int txAmount = 40;//number of blocks(Txs) to be generated
-	public static int dataSize = 10000*1024;// 1KB, 10KB, 100KB, 1MB, 10MB
-	public static String jsonKey = "10MB";
-	public static String fileName = "TimeOf40In200blocks.json";//"TimeOf10KIn200blocks.json"
+	public static int dataSize = 100*1024;// 1KB, 10KB, 100KB, 1MB, 10MB
+	public static String jsonKey = "100KB";
+	public static String fileName = "TimeOf40In200blocks3.json";//"TimeOf10KIn200blocks.json" TimeOf40In200blocks.json
 	
 	
 	private final static int chainLength = 200;
@@ -68,12 +68,12 @@ public class InvokeInsertChaincodeForSig {
 			try {
 				if(blockPositionBooleanArray[count] == 1) {
 					//generate fixed amount of data
-					byte[] fixedAmountData = InvokeHelper.getFixedAmountRandomBytes(txAmount);
+					byte[] fixedAmountData = InvokeHelper.getFixedAmountRandomBytes(dataSize);
 					InvokeHelper.putToLedger("txkey_"+count, fixedAmountData);
 					
 				}else {
 					//generate random data
-					byte[] fixedAmountData = InvokeHelper.getFixedAmountRandomBytes(txAmount);
+					byte[] fixedAmountData = InvokeHelper.getFixedAmountRandomBytes(dataSize);
 					InvokeHelper.putToLedger("txkey_"+count, fixedAmountData);
 				}
 			} catch (ProposalException | InvalidArgumentException e) {
@@ -81,7 +81,7 @@ public class InvokeInsertChaincodeForSig {
 				e.printStackTrace();
 			}
 			Thread.sleep(2000);
-System.out.print("-");
+			System.out.print("-");
 		}
 		
 		
@@ -90,7 +90,7 @@ System.out.print("-");
 		 * 读取数据并计时
 		 */
 		insertTimer.startTiming();
-		for(int i=0; i<40; i++) {
+		for(int i=0; i< txAmount; i++) {
 			try {
 				InvokeHelper.getFromLedger("txkey_"+txPositionMarkArray[i]);
 				
