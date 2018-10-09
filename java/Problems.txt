@@ -1,0 +1,34 @@
+CreateMutiChannels 创建多通道
+error信息
+ERROR - Channel mychannel1 error: New channel mychannel1 error. StatusValue 400. Status BAD_REQUEST
+org.hyperledger.fabric.sdk.exception.TransactionException: New channel mychannel1 error. StatusValue 400. Status BAD_REQUEST
+	at org.hyperledger.fabric.sdk.Channel.<init>(Channel.java:224)
+	at org.hyperledger.fabric.sdk.Channel.createNewInstance(Channel.java:1121)
+	at org.hyperledger.fabric.sdk.HFClient.newChannel(HFClient.java:135)
+	at org.app.network.CreateMutiChannel.main(CreateMutiChannel.java:82)
+
+定位代码 Channel.class  223行
+			if (200 != trxResult.getStatusValue()) {
+                throw new TransactionException(format("New channel %s error. StatusValue %d. Status %s", name,
+                        trxResult.getStatusValue(), "" + trxResult.getStatus()));
+            }
+            
+            
+
+getFromLedger sendProposal HE sendTransaction TIME Interval
+
+light & heavy
+
+获取channel配置的方法:
+1.进入容器 用peer command得到配置块，会被自动命名为mychannel_config.block
+2.通过容器挂载在外部访问，用fabric的configtxlator工具(在bin目录下)来翻译配置块，得到配置信息
+
+待解决的问题Works to do.
+(1)块的最大值是多少  是100MB吗
+    Max size of hyperledger fabric block? Is it 100MB?
+
+(2)代码里加上对比试验   将N个数据压缩之后存储在一个Block中  然后获取查询这个压缩数据的时间 作为与不压缩分散存储的对比
+    Modify the code, get query time of compressed data in one block.
+
+(3)得到配置块，查看当前channel的配置信息，并进行更改，设定为需要的值(如果block最大值不是100MB的话可能需要设定为超过100MB)
+    get config block, use tool:configrxlator to get config data, the modify the config to custom size.

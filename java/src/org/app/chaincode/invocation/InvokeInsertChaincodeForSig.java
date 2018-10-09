@@ -20,13 +20,10 @@ public class InvokeInsertChaincodeForSig {
 	private static Timer insertTimer = null;
 	
 	private final static int txAmount = 40;//number of blocks(Txs) to be generated
-<<<<<<< HEAD
-=======
-	public static int dataSize = 1*1024;// 1KB, 10KB, 100KB, 1MB, 10MB
-	public static String jsonKey = "1K";
+	public static int dataSize = 100*1024;// 1KB, 10KB, 100KB, 1MB, 10MB
+	public static String jsonKey = "100K";
 	public static String fileName = "TimeOf40In200blocks.json";//"TimeOf10KIn200blocks.json"
 	public static AccessType accessType = AccessType.LOCAL; //AccessType.LOCAL Or AccessType.REMOTE 模拟轻节点/非轻节点
->>>>>>> 4bf7cbf693679b73d060b39310575d8cb9d6d413
 	
 	private final static int chainLength = 200;
 	public static int[] txPositionMarkArray = new int[txAmount];
@@ -89,12 +86,10 @@ public class InvokeInsertChaincodeForSig {
 		}
 		
 		
-<<<<<<< HEAD
 		/*
 		 * read txAmount data from ledger and get Elapsed time. 
 		 * 读取数据并计时
 		 */
-=======
 		switch(accessType) {
 			case LOCAL:
 				readFromLedgerAndTime();
@@ -143,7 +138,6 @@ public class InvokeInsertChaincodeForSig {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
->>>>>>> 4bf7cbf693679b73d060b39310575d8cb9d6d413
 			try {
 				client.close();
 				serversocket.close();
