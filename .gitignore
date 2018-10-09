@@ -14,3 +14,5 @@ java/target/classes/org/app/chaincode/.DS_Store
 network_resources/crypto-config/peerOrganizations/org1.example.com/ca/fabric-ca-server.db
 network_resources/crypto-config/peerOrganizations/org2.example.com/ca/fabric-ca-server.db
 results/*
+configfile.json
+mychannel_config.block
