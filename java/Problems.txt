@@ -19,9 +19,29 @@ getFromLedger sendProposal HE sendTransaction TIME Interval
 
 light & heavy
 
+
+
+主机和容器之间传输文件:
+1.拿到容器的短ID或者指定的name
+	docker ps
+2.根据这两项的任意一项拿到ID全称
+	docker inspect -f '{{.Id}}' Name/dockerId
+3.文件传输
+	docker cp 本地文件路径 ID全称:容器路径
+	docker cp ID全称:容器文件路径 本地路径
+
+
+
+
 获取channel配置的方法:
 1.进入容器 用peer command得到配置块，会被自动命名为mychannel_config.block
+	peer channel -c "mychannel" fetch config --orderer orderer.example.com:7050
+	get: mychannel_config.block
 2.通过容器挂载在外部访问，用fabric的configtxlator工具(在bin目录下)来翻译配置块，得到配置信息
+	./configtxlator proto_decode --input mychannel_config.block --type common.Block
+
+
+
 
 待解决的问题Works to do.
 (1)块的最大值是多少  是100MB吗
