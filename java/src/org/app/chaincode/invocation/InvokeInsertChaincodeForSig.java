@@ -90,16 +90,8 @@ public class InvokeInsertChaincodeForSig {
 		 * read txAmount data from ledger and get Elapsed time. 
 		 * 读取数据并计时
 		 */
-		switch(accessType) {
-			case LOCAL:
-				readFromLedgerAndTime();
-				break;
-			case REMOTE:
-				readFromLedgerAndSendDataTime();
-				break;
-		}
+		readFromLedgerAndTime();
 		
-	
 	}
 	
 	
@@ -108,7 +100,7 @@ public class InvokeInsertChaincodeForSig {
 	
 	
 	
-	public static void readFromLedgerAndSendDataTime() {
+/*	public static void readFromLedgerAndSendDataTime() {
 		ServerSocket serversocket = null;
 		Socket client = null;
 		DataOutputStream dataOutputStream = null;
@@ -119,10 +111,10 @@ public class InvokeInsertChaincodeForSig {
             log.info("A client has been accepted.");
             dataOutputStream = new DataOutputStream(client.getOutputStream());
             byte[] tempByteArray = null;
-			/*
+			
 			 * read txAmount data from ledger and get Elapsed time. 
 			 * 读取数据并计时
-			 */
+			 
 			insertTimer.startTiming();
 			for(int i=0; i<txAmount; i++) {
 				tempByteArray = InvokeHelper.getFromLedger("txkey_"+txPositionMarkArray[i]);
@@ -148,7 +140,7 @@ public class InvokeInsertChaincodeForSig {
 			}
 			
 		}
-	}
+	}*/
 	
 	
 	public static void readFromLedgerAndTime() {
