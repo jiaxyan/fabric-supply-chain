@@ -32,6 +32,8 @@ import org.hyperledger.fabric.sdk.TransactionProposalRequest;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
 import org.hyperledger.fabric.sdk.exception.ProposalException;
 
+import com.gazman.bls.BlsSignatures;
+
 
 public class InvokeHelper {
 	private static final byte[] EXPECTED_EVENT_DATA = "!".getBytes(UTF_8);
@@ -46,11 +48,28 @@ public class InvokeHelper {
 	private static Peer peer;
 	private static EventHub eventHub;
 	private static Orderer orderer;
-	private static String testString = null;
 	
+	public static int txAmount = 0;
+	public static BlsSignatures blsSignatures = null;
+	private static byte[][] privateKey = null;
 
 	private Logger log = Logger.getLogger(InvokeHelper.class.getClass());
 	
+	
+	public static byte[][] getPrivateKey() throws SupplyChainException{
+		if(privateKey != null)
+			return privateKey;
+		else
+			throw new SupplyChainException("Signature Private Keys are null.");
+	}
+	
+	public static void signatureSetUp(int n) {
+		txAmount = n;
+		privateKey = new byte[txAmount][];
+		for(int i=0; i<txAmount; i++)
+			privateKey[i] = blsSignatures.pairing.getZr().newRandomElement().toBytes();
+			
+	}
 	
 	public static byte[] getFixedAmountRandomBytes(int amount) {
 		byte[] result = new byte[amount];
@@ -123,6 +142,13 @@ public class InvokeHelper {
 			throw new SupplyChainException("返回的结果长度不为1");
 		Iterator<ProposalResponse> it = responsesQuery.iterator();
 		return it.next().getChaincodeActionResponsePayload();
+	}
+	
+	
+	public static BlsSignatures getBlsSignatures() {
+		BlsSignatures blsSignatures = new BlsSignatures();
+		
+		return blsSignatures;
 	}
 	
 	/*public byte[] getFixedAmountRandomData(int amount) {

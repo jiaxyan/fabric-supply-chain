@@ -14,6 +14,9 @@ import org.app.util.Timer;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
 import org.hyperledger.fabric.sdk.exception.ProposalException;
 
+import com.gazman.bls.BlsSignatures;
+import com.gazman.bls.model.Signature;
+
 public class InvokeInsertChaincodeForSig {
 
 	private static Logger log = Logger.getLogger(InvokeInsertChaincodeForSig.class.getClass());
@@ -28,6 +31,7 @@ public class InvokeInsertChaincodeForSig {
 	private final static int chainLength = 200;
 	public static int[] txPositionMarkArray = new int[txAmount];
 	public static int[] blockPositionBooleanArray = new int[chainLength];
+	public static BlsSignatures blsSignatures;
 	
 	
 	public static void main(String[] args) throws InterruptedException {
@@ -46,6 +50,8 @@ public class InvokeInsertChaincodeForSig {
 		}
 		insertTimer = new Timer(jsonFilePath);
 		InvokeHelper.init();
+		InvokeHelper.signatureSetUp(txAmount);
+		blsSignatures = InvokeHelper.getBlsSignatures();
 		generateRandomPosition();
 		
 		/*
@@ -61,21 +67,39 @@ public class InvokeInsertChaincodeForSig {
 //		DeployInstantiateChaincode.deploy();
 //		Thread.sleep(1000);
 		
+		
+		byte[][] privateKey = null;
+		try {
+			privateKey = InvokeHelper.getPrivateKey();
+		} catch (SupplyChainException e1) {
+			e1.printStackTrace();
+		}
+		int prikeyIndex = 0;
 		/*
 		 * init 200 blocks(including data) in the channel
 		 * 生成固定长度的一个通道（对于不同数据大小需要重复生成）
 		 */
 		for(int count=0; count<chainLength; count++) {
 			try {
-				if(blockPositionBooleanArray[count] == 1) {
+				if(blockPositionBooleanArray[count] == 1 && prikeyIndex < txAmount) {
 					//generate fixed amount of data
 					byte[] fixedAmountData = InvokeHelper.getFixedAmountRandomBytes(dataSize);
-					InvokeHelper.putToLedger("txkey_"+count, fixedAmountData);
+//					InvokeHelper.putToLedger("txkey_"+count, fixedAmountData);
 					
+					//generate corresponding signature and
+					Signature signature = blsSignatures.sign(fixedAmountData, privateKey[prikeyIndex]);
+					int totalLen = fixedAmountData.length + signature.signature.toBytes().length;
+					byte[] dataPlusSig = new byte[totalLen];
+					System.arraycopy(fixedAmountData, 0, dataPlusSig, 0, fixedAmountData.length);
+					System.arraycopy(signature.signature.toBytes(), 0, dataPlusSig, fixedAmountData.length, signature.signature.toBytes().length);
+					//put data and sig into channel
+					InvokeHelper.putToLedger("txkey_"+count+"_plusSig", dataPlusSig);
+					prikeyIndex++;
 				}else {
 					//generate random data
 					byte[] fixedAmountData = InvokeHelper.getFixedAmountRandomBytes(dataSize);
 					InvokeHelper.putToLedger("txkey_"+count, fixedAmountData);
+					
 				}
 			} catch (ProposalException | InvalidArgumentException e) {
 				// TODO Auto-generated catch block

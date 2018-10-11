@@ -85,7 +85,7 @@ public class InvokeQueryChaincodeForSig {
 		BlsSignatures blsSignatures = new BlsSignatures();
 		byte[][] privateKey = new byte[Num][];
 		
-		for(int i=0; i<Num; i++) 
+		for(int i=0; i<Num; i++)
 			privateKey[i] = blsSignatures.pairing.getZr().newRandomElement().toBytes();
 			
 		init();//初始化
