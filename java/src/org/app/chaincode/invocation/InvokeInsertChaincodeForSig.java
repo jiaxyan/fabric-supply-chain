@@ -1,9 +1,5 @@
 package org.app.chaincode.invocation;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.Random;
 
 import org.apache.log4j.Level;
@@ -49,8 +45,7 @@ public class InvokeInsertChaincodeForSig {
 			jsonFilePath = "/home/csuser/fabric-supply-chain/results/"+fileName;
 		}
 		insertTimer = new Timer(jsonFilePath);
-		InvokeHelper.init();
-		InvokeHelper.signatureSetUp(txAmount);
+		InvokeHelper.init(txAmount);
 		blsSignatures = InvokeHelper.getBlsSignatures();
 		generateRandomPosition();
 		
@@ -176,7 +171,7 @@ public class InvokeInsertChaincodeForSig {
 			 */
 			insertTimer.startTiming();
 			for(int i=0; i<txAmount; i++) {
-				tempByteArray = InvokeHelper.getFromLedger("txkey_"+txPositionMarkArray[i]);
+				tempByteArray = InvokeHelper.getFromLedger("txkey_"+txPositionMarkArray[i]+"_plusSig");
 				System.out.println("tempByteArray length:" + tempByteArray.length);
 			}
 			insertTimer.stopTiming();

@@ -17,3 +17,4 @@ results/*
 configfile.json
 mychannel_config.block
 java/target/classes/org/app/util/InvokeHelper.class
+java/users/*

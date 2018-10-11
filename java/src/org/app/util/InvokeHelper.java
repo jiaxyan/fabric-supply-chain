@@ -2,13 +2,6 @@ package org.app.util;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.RandomAccessFile;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -63,13 +56,6 @@ public class InvokeHelper {
 			throw new SupplyChainException("Signature Private Keys are null.");
 	}
 	
-	public static void signatureSetUp(int n) {
-		txAmount = n;
-		privateKey = new byte[txAmount][];
-		for(int i=0; i<txAmount; i++)
-			privateKey[i] = blsSignatures.pairing.getZr().newRandomElement().toBytes();
-			
-	}
 	
 	public static byte[] getFixedAmountRandomBytes(int amount) {
 		byte[] result = new byte[amount];
@@ -78,7 +64,7 @@ public class InvokeHelper {
 		return result;
 	}
 	
-	public static void init() {
+	public static void init(int n) {
 		try {
 	        Util.cleanUp();
 			caClient = new CAClient(caUrl, null);
@@ -102,6 +88,14 @@ public class InvokeHelper {
 			channel.addOrderer(orderer);
 			channel.initialize();
 	
+			
+			blsSignatures = new BlsSignatures();
+			
+			txAmount = n;
+			privateKey = new byte[txAmount][];
+			for(int i=0; i<txAmount; i++)
+				privateKey[i] = blsSignatures.pairing.getZr().newRandomElement().toBytes();
+				
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -146,8 +140,6 @@ public class InvokeHelper {
 	
 	
 	public static BlsSignatures getBlsSignatures() {
-		BlsSignatures blsSignatures = new BlsSignatures();
-		
 		return blsSignatures;
 	}
 	
